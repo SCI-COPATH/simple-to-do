@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@700&display=swap"
+        rel="stylesheet">
+    <script src="./script.js"></script>
+    <title>to do</title>
+</head>
+
+<body>
+    <h1>To-Do App</h1>
+    <div class="main">
+        <div class="pic">
+            <img src="./assets/Checklist.jpg" alt="image">
+        </div>
+        <div class="data">
+            <p>A to-do list is a simple and effective tool used to organize and manage tasks, activities, and goals. It
+                helps individuals stay on track with their daily, weekly, or long-term responsibilities and ensures that
+                important tasks are not forgotten or overlooked. To-do lists can be used for both personal and
+                professional purposes, allowing people to prioritize their activities and manage their time efficiently.
+            </p>
+            <P>Enter Your Task</P>
+            <form class="selection" id="ourForm">
+                <input type="text" autocomplete="off" id="data_block" placeholder="Learn Python">
+                <button>Add to list</button>
+            </form>
+            <hr>
+            <div class="result-div">
+                <div class="headding">
+                    <h2>TO-DO List</h2>
+                    <div class="score">
+                        <h3>Score</h3>
+                        <h4 class ="mark" id="Mark"></h4>
+                    </div>
+                </div>
+                <ul class="list" id="list-ul">
+                </ul>
+                <button id="finishWork" class="Finish_but_last" onclick="finishTask()">Finish</button>
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

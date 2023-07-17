@@ -1,0 +1,92 @@
+h1{
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+body{
+    font-family: 'Poppins', sans-serif;
+}
+.main{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0px 2vw;
+    flex-flow: row-reverse;
+}
+.pic{
+   width: max-content;
+   align-self: center;
+}
+.pic img{
+    width: 50vw;
+}
+.data{
+    align-self: center;
+}
+.selection  button:hover{
+    background-color: grey;
+}
+.selection button{
+    padding: 15px 30px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+.selection  input{
+    padding: 15px 30px;
+    border-radius: 10px;
+    border: black 1px solid;
+    margin-right: 2vw;
+    margin-bottom: 20px;
+}
+.headding{
+    display: flex;
+    justify-content: space-between;
+}
+.list li{
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.Finish_work li{
+    text-decoration: line-through;
+    
+}
+
+.Finish_but{
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: black;
+    color: white;
+    border: black 1px solid;
+    border-radius: 4px; 
+}
+.Finish_but_last{
+    padding: 5px 10px;
+    margin: auto;
+    background-color: black;
+    color: white;
+    border: black 1px solid;
+    border-radius: 4px; 
+}
+.mark{
+    text-align: center;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.score h3{
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+@media (width<=600px){
+    .main{
+        display: block;
+        justify-content: center;
+    }
+    .pic img{
+        width: 90vw;
+        margin: auto;
+    }
+    
+    
+}
