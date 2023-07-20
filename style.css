@@ -106,6 +106,8 @@ body{
         width: 90vw;
         margin: auto;
     }
-    
+    .list{
+        padding: 0;
+    }
     
 }
