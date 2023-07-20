@@ -61,16 +61,29 @@ body{
    
     background-color: #59CE8F;
 }
-.Delete_but{
+.but{
     padding: 10px;
-    color: #FF1E00;
     font-weight:900;
 }
-
+.Delete_but{
+    color: #FF1E00; 
+}
+.Delete_but:hover{
+    color: #FF6666;
+}
 .Finish_but{
-    padding: 10px;
-    color: 59CE8F;
-    font-weight:900;
+    color: #59CE8F;
+}
+.Finish_but:hover{
+    color:#CBFFA9;
+}
+.Ebut:hover{
+    color: gray;
+}
+.editing p{
+    border: 0px;
+    outline: 0 ;
+    background: black;
 }
     /* padding: 5px 10px;
     margin-left: 10px;
