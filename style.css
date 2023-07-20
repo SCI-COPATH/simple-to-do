@@ -43,23 +43,42 @@ body{
     justify-content: space-between;
 }
 .list li{
+    list-style: none;
     padding-bottom: 10px;
     display: flex;
-    justify-content: space-between;
-}
-.Finish_work li{
-    text-decoration: line-through;
     
 }
 
+.task p{
+    border-radius: 10px;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    background-color: #FF1E00;
+    color: white;
+}
+.Finish_work p {
+   
+    background-color: #59CE8F;
+}
+.Delete_but{
+    padding: 10px;
+    color: #FF1E00;
+    font-weight:900;
+}
+
 .Finish_but{
-    padding: 5px 10px;
+    padding: 10px;
+    color: 59CE8F;
+    font-weight:900;
+}
+    /* padding: 5px 10px;
     margin-left: 10px;
     background-color: black;
     color: white;
     border: black 1px solid;
-    border-radius: 4px; 
-}
+    border-radius: 4px;  */
+
 .Finish_but_last{
     padding: 5px 10px;
     margin: auto;
