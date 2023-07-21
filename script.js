@@ -1,4 +1,6 @@
-let total=0,finish=0,editStatus=false ,data=[],finishStatus=[],dataString,statusString
+let total=0,finish=0,editStatus=false 
+let list = []
+
 document.addEventListener("DOMContentLoaded",()=>{
     let oruForm=document.getElementById("ourForm")
 
@@ -6,7 +8,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     let ourList =document.getElementById("list-ul")
     let markItom=document.getElementById("Mark")
     oruForm.addEventListener("submit",(e) => {
-        e.preventDefault()
+         e.preventDefault()
         console.log(inputObj.value)
         createItom(inputObj.value)
         
@@ -14,47 +16,40 @@ document.addEventListener("DOMContentLoaded",()=>{
     function createItom(x){
         if(x!=""){
         let MessageChannel=`<div class="task"><li><p>${x}</p><div class="but Ebut" onClick="editContent(this)">&#9998</div><div onClick="finishItom(this)" class="Finish_but  but">&check;</div> <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div></li><div>`
-            data.push(x)
-            finishStatus[data.length-1]=0
-            // console.log("Update list")
-            // console.log(data)
-            // console.log(finishStatus)
+       
+        list.push({'task':x,'status':0,'index':list.length})   
+           
            
             ourList.insertAdjacentHTML("beforeend",MessageChannel)
             inputObj.value=""
             total+=1;
             if(total!=0)
                 markItom.innerHTML=`${finish}/${total}`
-            dataString=JSON.stringify(data)
-            statusString=JSON.stringify(finishStatus)
-            localStorage.setItem('dataString',dataString)
-            localStorage.setItem('statusString',statusString)
+            localStorage.setItem('list',JSON.stringify(list))
+           
+            // localStorage.setItem('statusString',statusString)
             localStorage.setItem("total",total)
             localStorage.setItem("finish",finish)
         }
         inputObj.focus()
     }
     window.onload = function() {
-        
+            
             let listUl=document.getElementById('list-ul')
-            temp = localStorage.getItem('dataString');
-            data = JSON.parse(temp)==null?data: JSON.parse(temp);
-            temp = localStorage.getItem('statusString');
-            finishStatus=JSON.parse(temp)==null?finishStatus:JSON.parse(temp);
+            
             total=localStorage.getItem('total')==null?total:parseInt(localStorage.getItem('total'))
             finish=localStorage.getItem('finish')==null?finish:parseInt(localStorage.getItem('finish'))
-            // console.log(data)
-            // console.log(finishStatus)
-            // console.log(total)
-            // console.log(finish) 
+            list=JSON.parse(localStorage.getItem('list'))==null?list:JSON.parse(localStorage.getItem('list'))
+            console.log(list)
+          
             if(total!=0)
                 markItom.innerHTML=`${finish}/${total}`
             let MessageChannel
-            for(i=0;i<data.length;i++){
-                if(finishStatus[i]==0){
-                    MessageChannel=`<div class="task"><li><p>${data[i]}</p><div class="but Ebut" onClick="editContent(this)">&#9998</div><div onClick="finishItom(this)" class="Finish_but  but">&check;</div> <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div></li><div>`
+            for(i=0;i<list.length;i++){
+                if(list[i].status==0){
+                    MessageChannel=`<div class="task"><li><p>${list[i].task}</p><div class="but Ebut" onClick="editContent(this)">&#9998</div><div onClick="finishItom(this)" class="Finish_but  but">&check;</div> <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div></li><div>`
                 }else{
-                    MessageChannel=`<div class="task"><li class="Finish_work"><p>${data[i]}</p><div class="but Ebut" onClick="editContent(this)">&#9998</div><div onClick="finishItom(this)" class="Finish_but  but">&nbsp;&nbsp;&nbsp;</div> <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div></li><div>`
+                    MessageChannel=`<div class="task"><li class="Finish_work"><p>${list[i].task}</p><div class="but Ebut" onClick="editContent(this)">&#9998</div><div onClick="finishItom(this)" class="Finish_but  but">&nbsp;&nbsp;&nbsp;</div> <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div></li><div>`
                 }
                 // console.log(MessageChannel)
                 listUl.insertAdjacentHTML("beforeend",MessageChannel)
@@ -68,22 +63,20 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 function finishItom(elementToDelete){
     let CurrentTask=elementToDelete.parentElement.querySelector('p').innerText;
-    console.log(CurrentTask)
+    // console.log(CurrentTask)
     // console.log(editStatus)
     if(elementToDelete.innerHTML=="✓" && !editStatus  ){
-        finishStatus[data.indexOf(CurrentTask)]=1;
-        // console.log("finish list")
-        //  console.log(data)
-        // console.log(finishStatus)
+        
+        list[list.map(x=>x.task).indexOf(CurrentTask)]=1
+       
         elementToDelete.parentElement.parentElement.classList.add("Finish_work")
-        // console.log("Iniside if finish Work")
+        
         elementToDelete.innerHTML="&nbsp;&nbsp;&nbsp;"
         finish+=1
         let markItom=document.getElementById("Mark")
         markItom.innerHTML=`${finish}/${total}`
-        dataString=JSON.stringify(data)
-        statusString=JSON.stringify(finishStatus)
-        localStorage.setItem('dataString',dataString)
+        localStorage.setItem('list',JSON.stringify(list))
+       
         localStorage.setItem('statusString',statusString)
         localStorage.setItem("total",total)
         localStorage.setItem("finish",finish)
@@ -98,31 +91,19 @@ function deleteItom(elementToDelete){
     if(editStatus)
         editStatus=false
     else{
-        
-        // console.log("finish list")
-        // console.log(data)
-        // console.log(finishStatus)
+      
         if(!elementToDelete.parentElement.innerHTML.includes('✓')){
             finish-=1
         }
-            // console.log("inisde If to delete")
-        // }else{
-        //     console.log("inisde else to delete")
-        // }
-        
-    
+            
         total-=1
         let markItom=document.getElementById("Mark")
         markItom.innerHTML=`${finish}/${total}`
-        let index=data.indexOf(CurrentTask)
-        // console.log(data)
-        data.splice(index,1)
-        // console.log(data)
-        finishStatus.splice(index,1)
-        dataString=JSON.stringify(data)
-        statusString=JSON.stringify(finishStatus)
-        localStorage.setItem('dataString',dataString)
-        localStorage.setItem('statusString',statusString)
+        // let index=data.indexOf(CurrentTask)
+        let index=list.map(x=>x.task).indexOf(CurrentTask)
+        list.splice(index,1)
+       
+        localStorage.setItem('list',JSON.stringify(list))
         localStorage.setItem("total",total)
         localStorage.setItem("finish",finish)
         elementToDelete.parentElement.parentElement.remove() 
@@ -149,11 +130,10 @@ function editContent(edit){
                 
             // Check if the content has changed and update the paragraph accordingly
             if (updatedContent !== originalContent) {
-                // You can implement your own saving logic here, e.g., sending data to the server
-                data[data.indexOf(originalContent)]=updatedContent
-                dataString=JSON.stringify(data)
-                localStorage.setItem('dataString',dataString)
-                // console.log('Updated Content:', updatedContent);
+                
+                list[list.map(x=>x.task).indexOf(originalContent)].task=updatedContent
+                localStorage.setItem('list',JSON.stringify(list))
+                
 
             }
             editStatus=true
