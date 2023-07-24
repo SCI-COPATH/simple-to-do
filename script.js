@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     let markItom=document.getElementById("Mark")
     oruForm.addEventListener("submit",(e) => {
         // e.preventDefault()
-        console.log(inputObj.value)
+        // console.log(inputObj.value)
         createItom(inputObj.value)
         
     })
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             total=localStorage.getItem('total')==null?total:parseInt(localStorage.getItem('total'))
             finish=localStorage.getItem('finish')==null?finish:parseInt(localStorage.getItem('finish'))
             list=JSON.parse(localStorage.getItem('list'))==null?list:JSON.parse(localStorage.getItem('list'))
-            console.log(list)
+            // console.log(list)
           
             if(total!=0)
                 markItom.innerHTML=`${finish}/${total}`
@@ -84,8 +84,8 @@ document.addEventListener("DOMContentLoaded",()=>{
                                 <div>`
                 }
                                         
-                console.log(list[i].status)
-                console.log(MessageChannel)
+                // console.log(list[i].status)
+                // console.log(MessageChannel)
                 listUl.insertAdjacentHTML("beforeend",MessageChannel)
             }
             Itoms=list.filter((x)=>x.enable==0)
@@ -102,8 +102,8 @@ document.addEventListener("DOMContentLoaded",()=>{
                                         <div class="but des"  onClick="desableOrEnable(this)">${arrow[Itoms[i].enable]}<div>
                                     </li>
                                 <div>`
-                console.log(list[i].status)
-                console.log(MessageChannel)
+                // console.log(list[i].status)
+                // console.log(MessageChannel)
                 listUl.insertAdjacentHTML("beforeend",MessageChannel)
             }
             
@@ -120,7 +120,7 @@ function finishItom(elementToDelete){
     // console.log(editStatus)
     if(elementToDelete.innerHTML=="✓" && !editStatus  ){
         if(confirm(`Are you Finish ${CurrentTask} ?`)){
-            console.log(list.map(x=>x.task).indexOf(CurrentTask))
+            // console.log(list.map(x=>x.task).indexOf(CurrentTask))
             list[list.map(x=>x.task).indexOf(CurrentTask)].status=1
        
             elementToDelete.parentElement.parentElement.classList.add("Finish_work")
@@ -130,7 +130,7 @@ function finishItom(elementToDelete){
             let markItom=document.getElementById("Mark")
             markItom.innerHTML=`${finish}/${total}`
             localStorage.setItem('list',JSON.stringify(list))
-           console.log(list)
+        //    console.log(list)
             // localStorage.setItem('statusString',statusString)
             localStorage.setItem("total",total)
             localStorage.setItem("finish",finish)
@@ -190,9 +190,14 @@ function editContent(edit){
                 
             // Check if the content has changed and update the paragraph accordingly
             if (updatedContent !== originalContent) {
-                
-                list[list.map(x=>x.task).indexOf(originalContent)].task=updatedContent
-                localStorage.setItem('list',JSON.stringify(list))
+                if(list.map(x=>x.task).indexOf(updatedContent)<0){
+                    list[list.map(x=>x.task).indexOf(originalContent)].task=updatedContent
+                    localStorage.setItem('list',JSON.stringify(list))
+                }else{
+                    alert("Task Alredy Registed Check The Task and Reuse")
+                    list[list.map(x=>x.task).indexOf(originalContent)].task=originalContent
+                    location.reload()
+                }
                 
 
             }
