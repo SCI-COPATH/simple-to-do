@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     let ourList =document.getElementById("list-ul")
     let markItom=document.getElementById("Mark")
     oruForm.addEventListener("submit",(e) => {
-        //  e.preventDefault()
+        // e.preventDefault()
         console.log(inputObj.value)
         createItom(inputObj.value)
         
@@ -67,13 +67,23 @@ document.addEventListener("DOMContentLoaded",()=>{
             for(i=0;i<Itoms.length;i++){
                 MessageChannel=`<div class="task">
                                     <li ${stateClass[Itoms[i].status]} ${enableClass[Itoms[i].enable]}>
-                                        <p >${Itoms[i].task}</p>
-                                        <div class="but Ebut" onClick="editContent(this)">&#9998</div>
-                                        <div onClick="finishItom(this)" class="Finish_but  but">${stateSymbol[Itoms[i].status]}</div> 
-                                        <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div>
-                                        <div class="but des"  onClick="desableOrEnable(this)">${arrow[Itoms[i].enable]}<div>
+                                        <p >${Itoms[i].task}</p>`
+                if(Itoms[i].status==1){
+                    MessageChannel+=`<div class="but Ebut">${stateSymbol[1]}&nbsp;&nbsp;&nbsp;</div>
+                                     <div onClick="finishItom(this)" class="Finish_but  but">${stateSymbol[Itoms[i].status]}</div> 
+                                     <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div>
+                                     <div class="but des">${stateSymbol[1]}<div>
                                     </li>
                                 <div>`
+                }else{
+                    MessageChannel+=`<div class="but Ebut" onClick="editContent(this)">&#9998</div>
+                                     <div onClick="finishItom(this)" class="Finish_but  but">${stateSymbol[Itoms[i].status]}</div> 
+                                     <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div>
+                                     <div class="but des"  onClick="desableOrEnable(this)">${arrow[Itoms[i].enable]}<div>
+                                    </li>
+                                <div>`
+                }
+                                        
                 console.log(list[i].status)
                 console.log(MessageChannel)
                 listUl.insertAdjacentHTML("beforeend",MessageChannel)
@@ -124,6 +134,7 @@ function finishItom(elementToDelete){
             // localStorage.setItem('statusString',statusString)
             localStorage.setItem("total",total)
             localStorage.setItem("finish",finish)
+            location.reload();
         }
         
     }
@@ -195,17 +206,19 @@ function editContent(edit){
 }
 function desableOrEnable(desable){
     let CurrentTask=desable.parentElement.querySelector('p').innerText;
-    console.log(list[list.map(x=>x.task).indexOf(CurrentTask)].status)
+    // console.log(list[list.map(x=>x.task).indexOf(CurrentTask)].status)
     if(list[list.map(x=>x.task).indexOf(CurrentTask)].status==0){
         list[list.map(x=>x.task).indexOf(CurrentTask)].enable=!list[list.map(x=>x.task).indexOf(CurrentTask)].enable?1:0;
         // console.log(list[list.map(x=>x.task).indexOf(CurrentTask)].enable)
         if(list[list.map(x=>x.task).indexOf(CurrentTask)].enable==0){
             desable.parentElement.parentElement.classList.add("Eneble")
+            total-=1
         }else{
             desable.parentElement.parentElement.classList.remove("Eneble")
+            total+=1
         }
         localStorage.setItem('list',JSON.stringify(list))
-        
+        localStorage.setItem("total",total)
         location.reload();
     }
 }
