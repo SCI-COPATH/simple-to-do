@@ -61,10 +61,13 @@ body{
    
     background-color: #59CE8F;
 }
+
 .but{
     padding: 10px;
     font-weight:900;
+    
 }
+
 .Delete_but{
     color: #FF1E00; 
 }
@@ -79,6 +82,7 @@ body{
 }
 .Ebut:hover{
     color: gray;
+    
 }
 .editing p{
     border: 0px;
@@ -91,7 +95,9 @@ body{
     color: white;
     border: black 1px solid;
     border-radius: 4px;  */
-
+.but:hover{
+    cursor: pointer;
+}
 .Finish_but_last{
     padding: 5px 10px;
     margin: auto;
@@ -109,6 +115,10 @@ body{
 .score h3{
     padding-bottom: 0;
     margin-bottom: 0;
+}
+.Eneble p{
+    background-color: #F3E99F;
+    color: black;
 }
 @media only screen and (max-width:600px){
     .main{

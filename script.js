@@ -1,6 +1,10 @@
 let total=0,finish=0,editStatus=false 
 let list = []
+let arrow=[
+    '&#8630;',
+    '&#8631;'
 
+]
 document.addEventListener("DOMContentLoaded",()=>{
     let oruForm=document.getElementById("ourForm")
 
@@ -14,10 +18,18 @@ document.addEventListener("DOMContentLoaded",()=>{
         
     })
     function createItom(x){
-        if(x!=""){
-        let MessageChannel=`<div class="task"><li><p>${x}</p><div class="but Ebut" onClick="editContent(this)">&#9998</div><div onClick="finishItom(this)" class="Finish_but  but">&check;</div> <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div></li><div>`
+        if(x!=""&&list.map(y=>y.task).indexOf(x)<0){
+        let MessageChannel=`<div class="task">
+                                <li>
+                                    <p>${x}</p>
+                                    <div class="but Ebut" onClick="editContent(this)">&#9998</div>
+                                    <div onClick="finishItom(this)" class="Finish_but  but">&check;</div>
+                                    <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div>
+                                    <div class="but des"  onClick="desableOrEnable(this)">${arrow[1]}<div>
+                                </li>
+                            <div>`
        
-        list.push({'task':x,'status':0,'index':list.length})   
+        list.push({'task':x,'status':0,'index':list.length,'enable':1})   
            
            
             ourList.insertAdjacentHTML("beforeend",MessageChannel)
@@ -30,6 +42,8 @@ document.addEventListener("DOMContentLoaded",()=>{
             // localStorage.setItem('statusString',statusString)
             localStorage.setItem("total",total)
             localStorage.setItem("finish",finish)
+        }else if(x!=""){
+            alert("Enter an Existing task")
         }
         inputObj.focus()
     }
@@ -45,13 +59,22 @@ document.addEventListener("DOMContentLoaded",()=>{
             if(total!=0)
                 markItom.innerHTML=`${finish}/${total}`
             let MessageChannel
+            let stateClass=['','class="Finish_work"']
+            let stateSymbol=['&check;','&nbsp;&nbsp;&nbsp;']
+            let enableClass=['class="Eneble"','']
+
             for(i=0;i<list.length;i++){
-                if(list[i].status==0){
-                    MessageChannel=`<div class="task"><li><p>${list[i].task}</p><div class="but Ebut" onClick="editContent(this)">&#9998</div><div onClick="finishItom(this)" class="Finish_but  but">&check;</div> <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div></li><div>`
-                }else{
-                    MessageChannel=`<div class="task"><li class="Finish_work"><p>${list[i].task}</p><div class="but Ebut" onClick="editContent(this)">&#9998</div><div onClick="finishItom(this)" class="Finish_but  but">&nbsp;&nbsp;&nbsp;</div> <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div></li><div>`
-                }
-                // console.log(MessageChannel)
+                MessageChannel=`<div class="task">
+                                    <li ${stateClass[list[i].status]} ${enableClass[list[i].enable]}>
+                                        <p >${list[i].task}</p>
+                                        <div class="but Ebut" onClick="editContent(this)">&#9998</div>
+                                        <div onClick="finishItom(this)" class="Finish_but  but">${stateSymbol[list[i].status]}</div> 
+                                        <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div>
+                                        <div class="but des"  onClick="desableOrEnable(this)">${arrow[list[i].enable]}<div>
+                                    </li>
+                                <div>`
+                console.log(list[i].status)
+                console.log(MessageChannel)
                 listUl.insertAdjacentHTML("beforeend",MessageChannel)
             }
             
@@ -63,23 +86,27 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 function finishItom(elementToDelete){
     let CurrentTask=elementToDelete.parentElement.querySelector('p').innerText;
+    
     // console.log(CurrentTask)
     // console.log(editStatus)
     if(elementToDelete.innerHTML=="✓" && !editStatus  ){
-        
-        list[list.map(x=>x.task).indexOf(CurrentTask)]=1
+        if(confirm(`Are you Finish ${CurrentTask} ?`)){
+            console.log(list.map(x=>x.task).indexOf(CurrentTask))
+            list[list.map(x=>x.task).indexOf(CurrentTask)].status=1
        
-        elementToDelete.parentElement.parentElement.classList.add("Finish_work")
+            elementToDelete.parentElement.parentElement.classList.add("Finish_work")
+            
+            elementToDelete.innerHTML="&nbsp;&nbsp;&nbsp;"
+            finish+=1
+            let markItom=document.getElementById("Mark")
+            markItom.innerHTML=`${finish}/${total}`
+            localStorage.setItem('list',JSON.stringify(list))
+           console.log(list)
+            // localStorage.setItem('statusString',statusString)
+            localStorage.setItem("total",total)
+            localStorage.setItem("finish",finish)
+        }
         
-        elementToDelete.innerHTML="&nbsp;&nbsp;&nbsp;"
-        finish+=1
-        let markItom=document.getElementById("Mark")
-        markItom.innerHTML=`${finish}/${total}`
-        localStorage.setItem('list',JSON.stringify(list))
-       
-        localStorage.setItem('statusString',statusString)
-        localStorage.setItem("total",total)
-        localStorage.setItem("finish",finish)
     }
     editStatus=false
      
@@ -91,23 +118,26 @@ function deleteItom(elementToDelete){
     if(editStatus)
         editStatus=false
     else{
-      
-        if(!elementToDelete.parentElement.innerHTML.includes('✓')){
-            finish-=1
+        if(confirm(`Are You Sure to Delete ${CurrentTask} ?`)){
+            if(!elementToDelete.parentElement.innerHTML.includes('✓')){
+                finish-=1
+            }
+                
+            total-=1
+            let markItom=document.getElementById("Mark")
+            markItom.innerHTML=`${finish}/${total}`
+            // let index=data.indexOf(CurrentTask)
+            let index=list.map(x=>x.task).indexOf(CurrentTask)
+            list.splice(index,1)
+           
+            localStorage.setItem('list',JSON.stringify(list))
+            localStorage.setItem("total",total)
+            localStorage.setItem("finish",finish)
+            elementToDelete.parentElement.parentElement.remove() 
+            elementToDelete.remove()
         }
-            
-        total-=1
-        let markItom=document.getElementById("Mark")
-        markItom.innerHTML=`${finish}/${total}`
-        // let index=data.indexOf(CurrentTask)
-        let index=list.map(x=>x.task).indexOf(CurrentTask)
-        list.splice(index,1)
-       
-        localStorage.setItem('list',JSON.stringify(list))
-        localStorage.setItem("total",total)
-        localStorage.setItem("finish",finish)
-        elementToDelete.parentElement.parentElement.remove() 
-        elementToDelete.remove()
+      
+        
     }
 }
 function editContent(edit){
@@ -143,4 +173,20 @@ function editContent(edit){
         
     
     
+}
+function desableOrEnable(desable){
+    let CurrentTask=desable.parentElement.querySelector('p').innerText;
+    console.log(list[list.map(x=>x.task).indexOf(CurrentTask)].status)
+    if(list[list.map(x=>x.task).indexOf(CurrentTask)].status==0){
+        list[list.map(x=>x.task).indexOf(CurrentTask)].enable=!list[list.map(x=>x.task).indexOf(CurrentTask)].enable?1:0;
+        // console.log(list[list.map(x=>x.task).indexOf(CurrentTask)].enable)
+        if(list[list.map(x=>x.task).indexOf(CurrentTask)].enable==0){
+            desable.parentElement.parentElement.classList.add("Eneble")
+        }else{
+            desable.parentElement.parentElement.classList.remove("Eneble")
+        }
+        localStorage.setItem('list',JSON.stringify(list))
+        
+        location.reload();
+    }
 }
