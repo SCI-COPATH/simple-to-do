@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     let ourList =document.getElementById("list-ul")
     let markItom=document.getElementById("Mark")
     oruForm.addEventListener("submit",(e) => {
-         e.preventDefault()
+        //  e.preventDefault()
         console.log(inputObj.value)
         createItom(inputObj.value)
         
@@ -62,15 +62,34 @@ document.addEventListener("DOMContentLoaded",()=>{
             let stateClass=['','class="Finish_work"']
             let stateSymbol=['&check;','&nbsp;&nbsp;&nbsp;']
             let enableClass=['class="Eneble"','']
-
-            for(i=0;i<list.length;i++){
+            let Itoms=list.filter((x)=>x.enable==1)
+            // console.log(Itoms)
+            for(i=0;i<Itoms.length;i++){
                 MessageChannel=`<div class="task">
-                                    <li ${stateClass[list[i].status]} ${enableClass[list[i].enable]}>
-                                        <p >${list[i].task}</p>
+                                    <li ${stateClass[Itoms[i].status]} ${enableClass[Itoms[i].enable]}>
+                                        <p >${Itoms[i].task}</p>
                                         <div class="but Ebut" onClick="editContent(this)">&#9998</div>
-                                        <div onClick="finishItom(this)" class="Finish_but  but">${stateSymbol[list[i].status]}</div> 
+                                        <div onClick="finishItom(this)" class="Finish_but  but">${stateSymbol[Itoms[i].status]}</div> 
                                         <div class="Delete_but but" id="intoMark" onClick= deleteItom(this)>&#10008;</div>
-                                        <div class="but des"  onClick="desableOrEnable(this)">${arrow[list[i].enable]}<div>
+                                        <div class="but des"  onClick="desableOrEnable(this)">${arrow[Itoms[i].enable]}<div>
+                                    </li>
+                                <div>`
+                console.log(list[i].status)
+                console.log(MessageChannel)
+                listUl.insertAdjacentHTML("beforeend",MessageChannel)
+            }
+            Itoms=list.filter((x)=>x.enable==0)
+            if(Itoms.length>0){
+            listUl.insertAdjacentHTML("beforeend",'<hr><h2>Shedule to next Day</h2>')
+            }
+            for(i=0;i<Itoms.length;i++){
+                MessageChannel=`<div class="task">
+                                    <li ${stateClass[Itoms[i].status]} ${enableClass[Itoms[i].enable]}>
+                                        <p >${Itoms[i].task}</p>
+                                        <div class="but Ebut">${stateSymbol[1]}&nbsp;&nbsp;&nbsp;</div>
+                                        <div class="Finish_but  but">${stateSymbol[1]}</div> 
+                                        <div class="Delete_but but" id="intoMark" >${stateSymbol[1]}</div>
+                                        <div class="but des"  onClick="desableOrEnable(this)">${arrow[Itoms[i].enable]}<div>
                                     </li>
                                 <div>`
                 console.log(list[i].status)
